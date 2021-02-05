@@ -51,7 +51,7 @@ use crate::{
             nexus_nbd::{NbdDisk, NbdError},
         },
     },
-    core::{Bdev, CoreError, DmaError, Protocol, Reactor, Share},
+    core::{Bdev, CoreError, DmaError, Protocol, Reactor, Reactors, Share},
     ffihelper::errno_result_from_i32,
     lvs::Lvol,
     nexus_uri::{bdev_destroy, NexusBdevError},
@@ -643,6 +643,12 @@ impl Nexus {
 
         match errno_result_from_i32((), errno) {
             Ok(_) => {
+                // spdk_bdev_register registers a poller to wait for the
+                // examine to complete before calling spdk_notify_send with a
+                // pointer to the bdev name, which could be gone if the bdev
+                // was destroyed too soon after creation.
+                // Poll several times to have that run.
+                Reactors::current().poll_times(10);
                 self.set_state(NexusState::Open);
                 Ok(())
             }
