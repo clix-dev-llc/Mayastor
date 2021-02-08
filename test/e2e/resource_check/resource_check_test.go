@@ -2,7 +2,7 @@ package basic_test
 
 import (
 	"e2e-basic/common"
-	"os"
+	"e2e-basic/common/junit"
 	"testing"
 
 	. "github.com/onsi/ginkgo"
@@ -45,8 +45,7 @@ func resourceCheck() {
 func TestResourceCheck(t *testing.T) {
 	RegisterFailHandler(Fail)
 
-	reportDir := os.Getenv("e2e_reports_dir")
-	junitReporter := reporters.NewJUnitReporter(reportDir + "/resource_check-junit.xml")
+	junitReporter := reporters.NewJUnitReporter(junit.ConstructJunitFileName("resource_check-junit.xml"))
 	RunSpecsWithDefaultAndCustomReporters(t, "Resource Check Suite",
 		[]Reporter{junitReporter})
 }
