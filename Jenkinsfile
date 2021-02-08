@@ -210,7 +210,7 @@ pipeline {
               }
               post {
                 always {
-                    archiveArtifacts '/tmp/mayastor-logs/*'
+                    archiveArtifacts '/tmp/mayastor-logs/**/*'
                 }
               }
             }
