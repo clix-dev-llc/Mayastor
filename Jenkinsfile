@@ -206,11 +206,11 @@ pipeline {
                     fingerprintArtifacts: true
                 )
                 sh 'kubectl get nodes -o wide'
-                sh "nix-shell --run './scripts/e2e-test.sh --device /dev/sdb --tag \"${env.GIT_COMMIT_SHORT}\" --registry \"${env.REGISTRY}\" --logsdir /tmp/mayastor-logs --logs '"
+                sh "nix-shell --run './scripts/e2e-test.sh --device /dev/sdb --tag \"${env.GIT_COMMIT_SHORT}\" --registry \"${env.REGISTRY}\" --logsdir ./logs/mayastor --logs '"
               }
               post {
                 always {
-                    archiveArtifacts '/tmp/mayastor-logs/**/*'
+                    archiveArtifacts 'logs/**/*'
                 }
               }
             }
