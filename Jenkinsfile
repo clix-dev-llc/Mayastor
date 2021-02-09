@@ -210,7 +210,7 @@ pipeline {
               }
               post {
                 always {
-                    archiveArtifacts 'logs/**/*'
+                    archiveArtifacts 'logs/*'
                 }
               }
             }
